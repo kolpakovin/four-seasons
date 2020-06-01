@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
 
 import { RoomContex } from '../Context';
+import Loading from './Loading';
+
 
 const FeaturedRooms = () => {
-    const {featuredRooms} = useContext(RoomContex);
-    console.log(featuredRooms)
+    const {featuredRooms : rooms} = useContext(RoomContex);
+    console.log(rooms)
     return (
         <div>
             from featured rooms
+            <Loading />
         </div>
     )
 }
