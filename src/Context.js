@@ -61,21 +61,29 @@ const RoomProvider = ({ children }) => {
         await setData(prevState => ({
             ...prevState,
             [name]: value
-        }), console.log(data.type));
-        
+        }));
+
     }
 
     useEffect(() => {
         filterRooms();
-    }, [data.type])
+    }, [data.type, data.capacity])
 
     const filterRooms = () => {
         let { rooms, type, capacity, price, minSize, maxSize, breakfast, pets } = data;
         console.log(type);
-        let tempRooms = [...rooms];
+        let tempRooms = [...rooms]; // all the rooms
+        capacity = parseInt(capacity)  // transform value
+
+        // filter by type
         if (type !== 'all') {
             console.log('I was here')
             tempRooms = tempRooms.filter(room => room.type === type);
+        }
+
+        //filter by capacity 
+        if (capacity !== 1) {
+            tempRooms = tempRooms.filter(room => room.capacity >= capacity);
         }
         console.log(tempRooms)
         setData(prevState => ({
