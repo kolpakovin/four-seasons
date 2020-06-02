@@ -80,7 +80,7 @@ const RoomProvider = ({ children }) => {
             console.log('I was here')
             tempRooms = tempRooms.filter(room => room.type === type);
         }
-
+ 
         //filter by capacity 
         if(capacity !== 1) {
             tempRooms = tempRooms.filter(room => room.capacity >= capacity);
