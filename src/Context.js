@@ -33,14 +33,28 @@ const RoomProvider = ({ children }) => {
         return tempItems;
     }
 
+    const getRoom = slug => {
+        let tempRooms = [...data.rooms];
+        const room = tempRooms.find(room => room.slug === slug);
+        return room;
+    }
+
 
     return (
-        <RoomContex.Provider value={{ ...data }}>
+        <RoomContex.Provider value={{ ...data, getRoom }}>
             {children}
         </RoomContex.Provider>
     )
 }
 
 const RoomsConsumer = RoomContex.Consumer;
+
+export const withRoomConsumer = Component => {
+    return function ConsumerWrapper(props) {
+        return <RoomsConsumer>
+            {value => <Component {...props} context={value} />}
+        </RoomsConsumer>
+    }
+}
 
 export { RoomProvider, RoomsConsumer, RoomContex };
