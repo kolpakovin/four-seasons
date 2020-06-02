@@ -61,8 +61,8 @@ const RoomProvider = ({ children }) => {
         await setData(prevState => ({
             ...prevState,
             [name]: value
-        }), console.log(data.type));
-        
+        }));
+
     }
 
     useEffect(() => {
@@ -80,9 +80,9 @@ const RoomProvider = ({ children }) => {
             console.log('I was here')
             tempRooms = tempRooms.filter(room => room.type === type);
         }
- 
+
         //filter by capacity 
-        if(capacity !== 1) {
+        if (capacity !== 1) {
             tempRooms = tempRooms.filter(room => room.capacity >= capacity);
         }
         console.log(tempRooms)
