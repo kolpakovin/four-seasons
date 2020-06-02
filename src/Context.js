@@ -35,7 +35,7 @@ const RoomProvider = ({ children }) => {
 
     const getRoom = slug => {
         let tempRooms = [...data.rooms];
-        const room = tempRooms.find(room => room.slug === slug); 
+        const room = tempRooms.find(room => room.slug === slug);
         return room;
     }
 
@@ -48,5 +48,13 @@ const RoomProvider = ({ children }) => {
 }
 
 const RoomsConsumer = RoomContex.Consumer;
+
+export const withRoomConsumer = Component => {
+    return function ConsumerWrapper(props) {
+        return <RoomsConsumer>
+            {value => <Component {...props} context={value} />}
+        </RoomsConsumer>
+    }
+}
 
 export { RoomProvider, RoomsConsumer, RoomContex };
