@@ -1,25 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import items from './data';
 
-const RoomContex = React.createContext();
+const RoomContext = React.createContext();
 
 const RoomProvider = ({ children }) => {
     const [data, setData] = useState({
         rooms: [],
         sortedRooms: [],
         featuredRooms: [],
-        loading: true
+        loading: true,
+        type: 'all',
+        capacity: 1,
+        price: 0,
+        minPrice: 0,
+        maxPrice: 0,
+        minSize: 0,
+        maxSize: 0,
+        breakfast: false,
+        pets: false
     });
 
     useEffect(() => {
         let rooms = formatData(items);
         let featuredRooms = rooms.filter(room => room.featured === true);
+        let maxPrice = Math.max(...rooms.map(room => room.price));
+        let maxSize = Math.max(...rooms.map(room => room.size));
+
         setData(prevState => ({
-            ...prevState, // if I had more than 4 properties this line would be critical!
+            ...prevState, // if I had more properties this line would be critical!
             rooms,
             featuredRooms,
             sortedRooms: rooms,
-            loading: false
+            loading: false,
+            price: maxPrice,
+            maxPrice,
+            maxSize
         }))
     }, [])
 
@@ -39,15 +54,44 @@ const RoomProvider = ({ children }) => {
         return room;
     }
 
+    const handleChange = async event => {
+        const target = event.target;
+        const value = event.type === 'checkbox' ? target.checked : target.value;
+        const name = event.target.name;
+        await setData(prevState => ({
+            ...prevState,
+            [name]: value
+        }), console.log(data.type));
+        
+    }
+
+    useEffect(() => {
+        filterRooms();
+    }, [data.type])
+
+    const filterRooms = () => {
+        let { rooms, type, capacity, price, minSize, maxSize, breakfast, pets } = data;
+        console.log(type);
+        let tempRooms = [...rooms];
+        if (type !== 'all') {
+            console.log('I was here')
+            tempRooms = tempRooms.filter(room => room.type === type);
+        }
+        console.log(tempRooms)
+        setData(prevState => ({
+            ...prevState,
+            sortedRooms: tempRooms
+        }))
+    }
 
     return (
-        <RoomContex.Provider value={{ ...data, getRoom }}>
+        <RoomContext.Provider value={{ ...data, getRoom, handleChange }}>
             {children}
-        </RoomContex.Provider>
+        </RoomContext.Provider>
     )
 }
 
-const RoomsConsumer = RoomContex.Consumer;
+const RoomsConsumer = RoomContext.Consumer;
 
 export const withRoomConsumer = Component => {
     return function ConsumerWrapper(props) {
@@ -57,4 +101,4 @@ export const withRoomConsumer = Component => {
     }
 }
 
-export { RoomProvider, RoomsConsumer, RoomContex };
+export { RoomProvider, RoomsConsumer, RoomContext };
