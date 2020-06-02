@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { RoomContex } from '../Context';
+import { RoomContext } from '../Context';
 
 import Loading from './Loading';
 import Title from './Title';
@@ -7,7 +7,7 @@ import Room from './Room';
 
 
 const FeaturedRooms = () => {
-    let { loading, featuredRooms: rooms } = useContext(RoomContex);
+    let { loading, featuredRooms: rooms } = useContext(RoomContext);
     rooms = rooms.map(room => {
         return <Room key={room.id} room={room} />
     })

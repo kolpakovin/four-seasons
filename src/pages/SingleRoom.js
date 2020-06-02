@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import defaultBcg from '../images/room-1.jpeg';
 import Hero from '../components/Hero';
 import Banner from '../components/Banner';
-import { RoomContex } from '../Context'
+import { RoomContext } from '../Context'
 import StyledHero from '../components/StyledHero';
 
 const SinglePage = props => {
     const [slug, setSlug] = useState(props.match.params.slug)
-    const contextValue = useContext(RoomContex);
+    const contextValue = useContext(RoomContext);
     const { getRoom } = contextValue;
     const room = getRoom(slug);
     if (!room) {
