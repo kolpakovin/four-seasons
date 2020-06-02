@@ -56,7 +56,7 @@ const RoomProvider = ({ children }) => {
 
     const handleChange = async event => {
         const target = event.target;
-        const value = event.type === 'checkbox' ? target.checked : target.value;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = event.target.name;
         await setData(prevState => ({
             ...prevState,
@@ -67,7 +67,7 @@ const RoomProvider = ({ children }) => {
 
     useEffect(() => {
         filterRooms();
-    }, [data.type, data.capacity, data.rooms, data.price])
+    }, [data.type, data.capacity, data.rooms, data.price, data.breakfast, data.pets, data.minSize, data.maxSize])
 
     const filterRooms = () => {
         let { rooms, type, capacity, price, minSize, maxSize, breakfast, pets } = data;
@@ -89,7 +89,16 @@ const RoomProvider = ({ children }) => {
 
         // filter by price
         tempRooms = tempRooms.filter(room => room.price <= price);
-
+        // filter by size
+        tempRooms = tempRooms.filter(room => room.size >= minSize && room.size <= maxSize);
+        // filter by breakfast
+        if (breakfast) {
+            tempRooms = tempRooms.filter(room => room.breakfast === true);
+        }
+        // filter by pets
+        if (pets) {
+            tempRooms = tempRooms.filter(room => room.pets === true);
+        }
 
 
         // change data
