@@ -6,7 +6,6 @@ import Banner from '../components/Banner';
 import Services from '../components/Services';
 import FeaturedRooms from '../components/FeaturedRooms';
 
-
 const Home = () => {
     return (
         <>
