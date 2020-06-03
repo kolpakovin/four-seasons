@@ -510,5 +510,15 @@ h6 {
     width: 95vw;
     max-width: 1170px;
   }
+  .single-room-images img {
+    height: 200px;
+  }
+  .featured-rooms-center img {
+    height: 200px;
+  }
 }
 /* end of rooms fitler*/
+
+section.roomslist img {
+  height: 155px;
+}
