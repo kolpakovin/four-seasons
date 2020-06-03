@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import items from './data';
+// import items from './data';
+import Client from './Contentful';
+
+
 
 const RoomContext = React.createContext();
 
@@ -20,22 +23,31 @@ const RoomProvider = ({ children }) => {
         pets: false
     });
 
-    useEffect(() => {
-        let rooms = formatData(items);
-        let featuredRooms = rooms.filter(room => room.featured === true);
-        let maxPrice = Math.max(...rooms.map(room => room.price));
-        let maxSize = Math.max(...rooms.map(room => room.size));
+    const getData = async () => {
+        try {
+            let response = await Client.getEntries({ content_type: 'fourSeasons', order: '-fields.price' })
+            let rooms = formatData(response.items);
+            let featuredRooms = rooms.filter(room => room.featured === true);
+            let maxPrice = Math.max(...rooms.map(room => room.price));
+            let maxSize = Math.max(...rooms.map(room => room.size));
 
-        setData(prevState => ({
-            ...prevState, // if I had more properties this line would be critical!
-            rooms,
-            featuredRooms,
-            sortedRooms: rooms,
-            loading: false,
-            price: maxPrice,
-            maxPrice,
-            maxSize
-        }))
+            setData(prevState => ({
+                ...prevState, // if I had more properties this line would be critical!
+                rooms,
+                featuredRooms,
+                sortedRooms: rooms,
+                loading: false,
+                price: maxPrice,
+                maxPrice,
+                maxSize
+            }))
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getData()
     }, [])
 
     const formatData = (data) => {
